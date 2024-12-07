@@ -1,52 +1,61 @@
 import { v4 as uuidv4 } from "uuid";
+import { addUser, getUsers as fetchUsers, getUser as fetchUser, deleteUser as removeUser, updateUser as modifyUser } from "../dynamoDB.js";
 
-let users = [];
-
-export const getUsers = (req, res) => {
-  //   console.log(users);
-  res.send(users);
+export const getUsers = async (req, res) => {
+  try {
+    const users = await fetchUsers();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Could not fetch users" });
+  }
 };
 
-export const createUser = (req, res) => {
-  // console.log("Post route reached")
-  const user = req.body;
+export const createUser = async (req, res) => {
+  const user = { id: uuidv4(), ...req.body };
 
-  users.push({ ...user, id: uuidv4() });
-
-  res.send(`User with username ${user.firstName} added to database.`);
+  try {
+    await addUser(user);
+    res.status(201).json({ message: `User ${user.firstName} added to database.` });
+  } catch (error) {
+    res.status(500).json({ error: "Could not create user" });
+  }
 };
 
-export const getUser = (req, res) => {
+export const getUser = async (req, res) => {
   const { id } = req.params;
 
-  const foundUser = users.find((user) => user.id == id);
-  res.send(foundUser);
+  try {
+    const user = await fetchUser(id);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Could not fetch user" });
+  }
 };
 
-export const deleteUser = (req, res) => {
+export const deleteUser = async (req, res) => {
   const { id } = req.params;
 
-  users = users.filter((user) => user.id !== id);
-
-  res.send(`User with the ${id} was deleted from database.`);
+  try {
+    await removeUser(id);
+    res.status(200).json({ message: `User with id ${id} deleted.` });
+  } catch (error) {
+    res.status(500).json({ error: "Could not delete user" });
+  }
 };
 
-export const updateUser = (req, res) => {
+export const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { firstName, lastName, age } = req.body;
-  const user = users.find((user) => user.id == id);
+  const updates = req.body;
 
-  if (firstName) {
-    user.firstName = firstName;
+  try {
+    await modifyUser(id, updates);
+    res.status(200).json({ message: `User with id ${id} updated.` });
+  } catch (error) {
+    res.status(500).json({ error: "Could not update user" });
   }
-
-  if (lastName) {
-    user.lastName = lastName;
-  }
-
-  if (age) {
-    user.age = age;
-  }
-
-  res.send(`User with the id ${id} has been updated.`);
 };
+
