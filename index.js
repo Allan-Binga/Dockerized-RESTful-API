@@ -1,9 +1,10 @@
-const express = require("express");
-const bodyParser = require("body-parser"); //take-in incoming post requests
-const usersRoutes = require("./routes/users");
+import express from "express";
+import bodyParser from "body-parser"; // take-in incoming post requests
+import usersRoutes from "./routes/users.js";
+
 
 var app = express(); //call express as a function
-const PORT = 8000;
+const PORT = 8100;
 
 app.use(bodyParser.json());
 
