@@ -1,6 +1,6 @@
-import express from "express";
-import bodyParser from "body-parser"; //take-in incoming post requests
-import usersRoutes from "./routes/users.js";
+const express = require("express");
+const bodyParser = require("body-parser"); //take-in incoming post requests
+const usersRoutes = require("./routes/users");
 
 var app = express(); //call express as a function
 const PORT = 8000;

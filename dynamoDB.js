@@ -1,7 +1,7 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand, ScanCommand, GetCommand, DeleteCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
-const dynamoDBClient = new DynamoDBClient({ region: "us-east-1" }); // Replace with your region
+const dynamoDBClient = new DynamoDBClient({ region: "us-east-1" });
 const docClient = DynamoDBDocumentClient.from(dynamoDBClient);
 
 export const addUser = async (user) => {
