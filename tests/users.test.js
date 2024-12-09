@@ -3,9 +3,8 @@ import {
   getUsers,
   getUser,
   deleteUser,
-  updateUser
+  updateUser,
 } from "../controllers/users";
-
 
 jest.mock("../dynamoDB.js", () => ({
   getUsers: jest
@@ -46,16 +45,11 @@ jest.mock("../dynamoDB.js", () => ({
           : null
       )
     ),
-    updateUser: jest
+  updateUser: jest
     .fn()
     .mockImplementation((id, updates) =>
-      Promise.resolve(
-        id === "1"
-          ? { id: "1", ...updates }
-          : null
-      )
+      Promise.resolve(id === "1" ? { id: "1", ...updates } : null)
     ),
-    
 }));
 
 describe("Users Controller", () => {
@@ -121,7 +115,9 @@ describe("Users Controller", () => {
     await deleteUser(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith({ message: "User with id 3 deleted." });
+    expect(res.json).toHaveBeenCalledWith({
+      message: "User with id 3 deleted.",
+    });
   });
 
   it("Should update a user successfully.", async () => {
@@ -130,12 +126,12 @@ describe("Users Controller", () => {
       body: { firstName: "Johntez", lastName: "Alandez", age: 35 },
     };
     const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
-  
+
     await updateUser(req, res);
-  
+
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith({ message: "User with id 1 updated." });
+    expect(res.json).toHaveBeenCalledWith({
+      message: "User with id 1 updated.",
+    });
   });
-  
-  
 });
