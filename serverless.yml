@@ -1,0 +1,72 @@
+service: dockerized-restful-api
+frameworkVersion: "4"
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    USERS_TABLE: Users
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:DeleteItem
+            - dynamodb:UpdateItem
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/Users
+
+functions:
+  getUsers:
+    handler: controllers/users.getUsers
+    events:
+      - http:
+          path: users
+          method: get
+
+  createUser:
+    handler: controllers/users.createUser
+    events:
+      - http:
+          path: users
+          method: post
+
+  getUser:
+    handler: controllers/users.getUser
+    events:
+      - http:
+          path: users/{id}
+          method: get
+
+  deleteUser:
+    handler: controllers/users.deleteUser
+    events:
+      - http:
+          path: users/{id}
+          method: delete
+
+  updateUser:
+    handler: controllers/users.updateUser
+    events:
+      - http:
+          path: users/{id}
+          method: put
+
+# COMMENTED OUT BECAUSE THE USERS TABLE IS ALREADY CREATED
+# resources:
+#   Resources:
+#     UsersTable:
+#       Type: AWS::DynamoDB::Table
+#       Properties:
+#         TableName: Users
+#         AttributeDefinitions:
+#           - AttributeName: id
+#             AttributeType: S
+#         KeySchema:
+#           - AttributeName: id
+#             KeyType: HASH
+#         BillingMode: PAY_PER_REQUEST
