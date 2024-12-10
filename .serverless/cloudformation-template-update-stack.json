@@ -2,34 +2,34 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "The AWS CloudFormation template for this Serverless application",
   "Resources": {
-    "GetUsersLogGroup": {
-      "Type": "AWS::Logs::LogGroup",
-      "Properties": {
-        "LogGroupName": "/aws/lambda/dockerized-restful-api-prod-getUsers"
-      }
-    },
     "CreateUserLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/dockerized-restful-api-prod-createUser"
+        "LogGroupName": "/aws/lambda/dockerized-restful-api-dev-createUser"
+      }
+    },
+    "GetUsersLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/dockerized-restful-api-dev-getUsers"
       }
     },
     "GetUserLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/dockerized-restful-api-prod-getUser"
+        "LogGroupName": "/aws/lambda/dockerized-restful-api-dev-getUser"
       }
     },
     "DeleteUserLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/dockerized-restful-api-prod-deleteUser"
+        "LogGroupName": "/aws/lambda/dockerized-restful-api-dev-deleteUser"
       }
     },
     "UpdateUserLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/dockerized-restful-api-prod-updateUser"
+        "LogGroupName": "/aws/lambda/dockerized-restful-api-dev-updateUser"
       }
     },
     "IamRoleLambdaExecution": {
@@ -58,7 +58,7 @@
                 "-",
                 [
                   "dockerized-restful-api",
-                  "prod",
+                  "dev",
                   "lambda"
                 ]
               ]
@@ -75,7 +75,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/dockerized-restful-api-prod*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/dockerized-restful-api-dev*:*"
                     }
                   ]
                 },
@@ -86,20 +86,9 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/dockerized-restful-api-prod*:*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/dockerized-restful-api-dev*:*:*"
                     }
                   ]
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "dynamodb:PutItem",
-                    "dynamodb:Scan",
-                    "dynamodb:GetItem",
-                    "dynamodb:DeleteItem",
-                    "dynamodb:UpdateItem"
-                  ],
-                  "Resource": "arn:aws:dynamodb:us-east-1:*:table/Users"
                 }
               ]
             }
@@ -111,7 +100,7 @@
             "-",
             [
               "dockerized-restful-api",
-              "prod",
+              "dev",
               {
                 "Ref": "AWS::Region"
               },
@@ -121,49 +110,21 @@
         }
       }
     },
-    "GetUsersLambdaFunction": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
-          "S3Key": "serverless/dockerized-restful-api/prod/1733796604555-2024-12-10T02:10:04.555Z/dockerized-restful-api.zip"
-        },
-        "Handler": "controllers/users.getUsers",
-        "Runtime": "nodejs20.x",
-        "FunctionName": "dockerized-restful-api-prod-getUsers",
-        "MemorySize": 1024,
-        "Timeout": 6,
-        "Environment": {
-          "Variables": {
-            "USERS_TABLE": "Users-prod"
-          }
-        },
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        }
-      },
-      "DependsOn": [
-        "GetUsersLogGroup"
-      ]
-    },
     "CreateUserLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
-          "S3Key": "serverless/dockerized-restful-api/prod/1733796604555-2024-12-10T02:10:04.555Z/dockerized-restful-api.zip"
+          "S3Key": "serverless/dockerized-restful-api/dev/1733807018713-2024-12-10T05:03:38.713Z/dockerized-restful-api.zip"
         },
-        "Handler": "controllers/users.createUser",
+        "Handler": "handler.createUser",
         "Runtime": "nodejs20.x",
-        "FunctionName": "dockerized-restful-api-prod-createUser",
+        "FunctionName": "dockerized-restful-api-dev-createUser",
         "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "USERS_TABLE": "Users-prod"
+            "USERS_TABLE": "Users-dev"
           }
         },
         "Role": {
@@ -177,21 +138,49 @@
         "CreateUserLogGroup"
       ]
     },
+    "GetUsersLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
+          "S3Key": "serverless/dockerized-restful-api/dev/1733807018713-2024-12-10T05:03:38.713Z/dockerized-restful-api.zip"
+        },
+        "Handler": "handler.getUsers",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "dockerized-restful-api-dev-getUsers",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "USERS_TABLE": "Users-dev"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "GetUsersLogGroup"
+      ]
+    },
     "GetUserLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
-          "S3Key": "serverless/dockerized-restful-api/prod/1733796604555-2024-12-10T02:10:04.555Z/dockerized-restful-api.zip"
+          "S3Key": "serverless/dockerized-restful-api/dev/1733807018713-2024-12-10T05:03:38.713Z/dockerized-restful-api.zip"
         },
-        "Handler": "controllers/users.getUser",
+        "Handler": "handler.getUser",
         "Runtime": "nodejs20.x",
-        "FunctionName": "dockerized-restful-api-prod-getUser",
+        "FunctionName": "dockerized-restful-api-dev-getUser",
         "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "USERS_TABLE": "Users-prod"
+            "USERS_TABLE": "Users-dev"
           }
         },
         "Role": {
@@ -210,16 +199,16 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
-          "S3Key": "serverless/dockerized-restful-api/prod/1733796604555-2024-12-10T02:10:04.555Z/dockerized-restful-api.zip"
+          "S3Key": "serverless/dockerized-restful-api/dev/1733807018713-2024-12-10T05:03:38.713Z/dockerized-restful-api.zip"
         },
-        "Handler": "controllers/users.deleteUser",
+        "Handler": "handler.deleteUser",
         "Runtime": "nodejs20.x",
-        "FunctionName": "dockerized-restful-api-prod-deleteUser",
+        "FunctionName": "dockerized-restful-api-dev-deleteUser",
         "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "USERS_TABLE": "Users-prod"
+            "USERS_TABLE": "Users-dev"
           }
         },
         "Role": {
@@ -238,16 +227,16 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
-          "S3Key": "serverless/dockerized-restful-api/prod/1733796604555-2024-12-10T02:10:04.555Z/dockerized-restful-api.zip"
+          "S3Key": "serverless/dockerized-restful-api/dev/1733807018713-2024-12-10T05:03:38.713Z/dockerized-restful-api.zip"
         },
-        "Handler": "controllers/users.updateUser",
+        "Handler": "handler.updateUser",
         "Runtime": "nodejs20.x",
-        "FunctionName": "dockerized-restful-api-prod-updateUser",
+        "FunctionName": "dockerized-restful-api-dev-updateUser",
         "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "USERS_TABLE": "Users-prod"
+            "USERS_TABLE": "Users-dev"
           }
         },
         "Role": {
@@ -261,60 +250,60 @@
         "UpdateUserLogGroup"
       ]
     },
-    "GetUsersLambdaVersion5krPLjaornWmm5CGu92dcCChp7O2kks7NZZKptvEuU": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "GetUsersLambdaFunction"
-        },
-        "CodeSha256": "PyeqTv5slv4pRTBVhDpeUlyamwj4PL/xqyXLXvd+l+8="
-      }
-    },
-    "CreateUserLambdaVersionWO5h0FAqPeWunjdGDcP9I7b3KFH3o7cm7whqR7Puw8": {
+    "CreateUserLambdaVersionvZnsm4kPAA1xYfuQkkpT87dZaxrau0ph8FFpEsuA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateUserLambdaFunction"
         },
-        "CodeSha256": "PyeqTv5slv4pRTBVhDpeUlyamwj4PL/xqyXLXvd+l+8="
+        "CodeSha256": "ETooUZB79TscPR1knPBnpITZAEP2a9/7S2R1JbqQGQM="
       }
     },
-    "GetUserLambdaVersionV3KLHXOUZQdqcoaD5OulPmbPEcMbqomaj9zX0hLevjI": {
+    "GetUsersLambdaVersionebj9KTaKpB7jxm3oTYrBKMisdRXzJ6l3qgB8i1McjM": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "GetUsersLambdaFunction"
+        },
+        "CodeSha256": "ETooUZB79TscPR1knPBnpITZAEP2a9/7S2R1JbqQGQM="
+      }
+    },
+    "GetUserLambdaVersionKzOKDpiP8z0bI1KJvWwlIRU6YfraVPem3H0OtX6cnKY": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetUserLambdaFunction"
         },
-        "CodeSha256": "PyeqTv5slv4pRTBVhDpeUlyamwj4PL/xqyXLXvd+l+8="
+        "CodeSha256": "ETooUZB79TscPR1knPBnpITZAEP2a9/7S2R1JbqQGQM="
       }
     },
-    "DeleteUserLambdaVersionh7UahCcRlzX59yFJ1Przj3XZjHx1sAXm0W9B4z3tI": {
+    "DeleteUserLambdaVersionRet9GQZr6kgaPyjD1aWZprPVflo5ubd5plYBTWTCEbM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteUserLambdaFunction"
         },
-        "CodeSha256": "PyeqTv5slv4pRTBVhDpeUlyamwj4PL/xqyXLXvd+l+8="
+        "CodeSha256": "ETooUZB79TscPR1knPBnpITZAEP2a9/7S2R1JbqQGQM="
       }
     },
-    "UpdateUserLambdaVersionH31wmdHMrNEL8vPk13dD421ycHDBmpmxiBic5hiYf8": {
+    "UpdateUserLambdaVersionIUxCvpnuvTuxJrjrgbslCVUSjuASoRDbZKPM1atMqVU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateUserLambdaFunction"
         },
-        "CodeSha256": "PyeqTv5slv4pRTBVhDpeUlyamwj4PL/xqyXLXvd+l+8="
+        "CodeSha256": "ETooUZB79TscPR1knPBnpITZAEP2a9/7S2R1JbqQGQM="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "prod-dockerized-restful-api",
+        "Name": "dev-dockerized-restful-api",
         "EndpointConfiguration": {
           "Types": [
             "EDGE"
@@ -349,52 +338,6 @@
           "Ref": "ApiGatewayRestApi"
         }
       }
-    },
-    "ApiGatewayMethodUsersGet": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "HttpMethod": "GET",
-        "RequestParameters": {},
-        "ResourceId": {
-          "Ref": "ApiGatewayResourceUsers"
-        },
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        },
-        "ApiKeyRequired": false,
-        "AuthorizationType": "NONE",
-        "Integration": {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":lambda:path/2015-03-31/functions/",
-                {
-                  "Fn::GetAtt": [
-                    "GetUsersLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "/invocations"
-              ]
-            ]
-          }
-        },
-        "MethodResponses": []
-      },
-      "DependsOn": [
-        "GetUsersLambdaPermissionApiGateway"
-      ]
     },
     "ApiGatewayMethodUsersPost": {
       "Type": "AWS::ApiGateway::Method",
@@ -440,6 +383,52 @@
       },
       "DependsOn": [
         "CreateUserLambdaPermissionApiGateway"
+      ]
+    },
+    "ApiGatewayMethodUsersGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsers"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetUsersLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": [
+        "GetUsersLambdaPermissionApiGateway"
       ]
     },
     "ApiGatewayMethodUsersIdVarGet": {
@@ -580,28 +569,28 @@
         "UpdateUserLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1733796573978": {
+    "ApiGatewayDeployment1733806971850": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         },
-        "StageName": "prod"
+        "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodUsersGet",
         "ApiGatewayMethodUsersPost",
+        "ApiGatewayMethodUsersGet",
         "ApiGatewayMethodUsersIdVarGet",
         "ApiGatewayMethodUsersIdVarDelete",
         "ApiGatewayMethodUsersIdVarPut"
       ]
     },
-    "GetUsersLambdaPermissionApiGateway": {
+    "CreateUserLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "GetUsersLambdaFunction",
+            "CreateUserLambdaFunction",
             "Arn"
           ]
         },
@@ -633,12 +622,12 @@
         }
       }
     },
-    "CreateUserLambdaPermissionApiGateway": {
+    "GetUsersLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "CreateUserLambdaFunction",
+            "GetUsersLambdaFunction",
             "Arn"
           ]
         },
@@ -784,23 +773,28 @@
     "UsersTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
-        "TableName": "Users-prod",
+        "TableName": "Users-dev",
         "AttributeDefinitions": [
           {
-            "AttributeName": "userId",
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "Users",
             "AttributeType": "S"
           }
         ],
         "KeySchema": [
           {
-            "AttributeName": "userId",
+            "AttributeName": "id",
             "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "Users",
+            "KeyType": "RANGE"
           }
         ],
-        "ProvisionedThroughput": {
-          "ReadCapacityUnits": 5,
-          "WriteCapacityUnits": 5
-        }
+        "BillingMode": "PAY_PER_REQUEST"
       }
     }
   },
@@ -808,52 +802,52 @@
     "ServerlessDeploymentBucketName": {
       "Value": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
       "Export": {
-        "Name": "sls-dockerized-restful-api-prod-ServerlessDeploymentBucketName"
-      }
-    },
-    "GetUsersLambdaFunctionQualifiedArn": {
-      "Description": "Current Lambda function version",
-      "Value": {
-        "Ref": "GetUsersLambdaVersion5krPLjaornWmm5CGu92dcCChp7O2kks7NZZKptvEuU"
-      },
-      "Export": {
-        "Name": "sls-dockerized-restful-api-prod-GetUsersLambdaFunctionQualifiedArn"
+        "Name": "sls-dockerized-restful-api-dev-ServerlessDeploymentBucketName"
       }
     },
     "CreateUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateUserLambdaVersionWO5h0FAqPeWunjdGDcP9I7b3KFH3o7cm7whqR7Puw8"
+        "Ref": "CreateUserLambdaVersionvZnsm4kPAA1xYfuQkkpT87dZaxrau0ph8FFpEsuA"
       },
       "Export": {
-        "Name": "sls-dockerized-restful-api-prod-CreateUserLambdaFunctionQualifiedArn"
+        "Name": "sls-dockerized-restful-api-dev-CreateUserLambdaFunctionQualifiedArn"
+      }
+    },
+    "GetUsersLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "GetUsersLambdaVersionebj9KTaKpB7jxm3oTYrBKMisdRXzJ6l3qgB8i1McjM"
+      },
+      "Export": {
+        "Name": "sls-dockerized-restful-api-dev-GetUsersLambdaFunctionQualifiedArn"
       }
     },
     "GetUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetUserLambdaVersionV3KLHXOUZQdqcoaD5OulPmbPEcMbqomaj9zX0hLevjI"
+        "Ref": "GetUserLambdaVersionKzOKDpiP8z0bI1KJvWwlIRU6YfraVPem3H0OtX6cnKY"
       },
       "Export": {
-        "Name": "sls-dockerized-restful-api-prod-GetUserLambdaFunctionQualifiedArn"
+        "Name": "sls-dockerized-restful-api-dev-GetUserLambdaFunctionQualifiedArn"
       }
     },
     "DeleteUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteUserLambdaVersionh7UahCcRlzX59yFJ1Przj3XZjHx1sAXm0W9B4z3tI"
+        "Ref": "DeleteUserLambdaVersionRet9GQZr6kgaPyjD1aWZprPVflo5ubd5plYBTWTCEbM"
       },
       "Export": {
-        "Name": "sls-dockerized-restful-api-prod-DeleteUserLambdaFunctionQualifiedArn"
+        "Name": "sls-dockerized-restful-api-dev-DeleteUserLambdaFunctionQualifiedArn"
       }
     },
     "UpdateUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateUserLambdaVersionH31wmdHMrNEL8vPk13dD421ycHDBmpmxiBic5hiYf8"
+        "Ref": "UpdateUserLambdaVersionIUxCvpnuvTuxJrjrgbslCVUSjuASoRDbZKPM1atMqVU"
       },
       "Export": {
-        "Name": "sls-dockerized-restful-api-prod-UpdateUserLambdaFunctionQualifiedArn"
+        "Name": "sls-dockerized-restful-api-dev-UpdateUserLambdaFunctionQualifiedArn"
       }
     },
     "ServiceEndpoint": {
@@ -874,12 +868,12 @@
             {
               "Ref": "AWS::URLSuffix"
             },
-            "/prod"
+            "/dev"
           ]
         ]
       },
       "Export": {
-        "Name": "sls-dockerized-restful-api-prod-ServiceEndpoint"
+        "Name": "sls-dockerized-restful-api-dev-ServiceEndpoint"
       }
     }
   }
