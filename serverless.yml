@@ -1,0 +1,81 @@
+service: user-management-api
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'} # Default to 'dev' stage if not specified
+  environment:
+    USERS_TABLE: Users-${self:provider.stage} # DynamoDB table name
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+            - dynamodb:Scan
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/Users-${self:provider.stage}
+
+functions:
+  createUser:
+    handler: controllers/users.createUser
+    environment:
+      USERS_TABLE: ${self:provider.environment.USERS_TABLE}
+    events:
+      - http:
+          path: users
+          method: post
+  
+  getUsers:
+    handler: controllers/users.getUsers
+    environment:
+      USERS_TABLE: ${self:provider.environment.USERS_TABLE}
+    events:
+      - http:
+          path: users
+          method: get
+  
+  getUser:
+    handler: controllers/users.getUser
+    environment:
+      USERS_TABLE: ${self:provider.environment.USERS_TABLE}
+    events:
+      - http:
+          path: users/{id}
+          method: get
+
+  updateUser:
+    handler: controllers/users.updateUser
+    environment:
+      USERS_TABLE: ${self:provider.environment.USERS_TABLE}
+    events:
+      - http:
+          path: users/{id}
+          method: put
+
+  deleteUser:
+    handler: controllers/users.deleteUser
+    environment:
+      USERS_TABLE: ${self:provider.environment.USERS_TABLE}
+    events:
+      - http:
+          path: users/{id}
+          method: delete
+
+resources:
+  Resources:
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.USERS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
