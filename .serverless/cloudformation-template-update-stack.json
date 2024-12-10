@@ -5,31 +5,31 @@
     "CreateUserLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/user-management-api-dev-createUser"
+        "LogGroupName": "/aws/lambda/user-management-api-prod-createUser"
       }
     },
     "GetUsersLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/user-management-api-dev-getUsers"
+        "LogGroupName": "/aws/lambda/user-management-api-prod-getUsers"
       }
     },
     "GetUserLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/user-management-api-dev-getUser"
+        "LogGroupName": "/aws/lambda/user-management-api-prod-getUser"
       }
     },
     "UpdateUserLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/user-management-api-dev-updateUser"
+        "LogGroupName": "/aws/lambda/user-management-api-prod-updateUser"
       }
     },
     "DeleteUserLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/user-management-api-dev-deleteUser"
+        "LogGroupName": "/aws/lambda/user-management-api-prod-deleteUser"
       }
     },
     "IamRoleLambdaExecution": {
@@ -58,7 +58,7 @@
                 "-",
                 [
                   "user-management-api",
-                  "dev",
+                  "prod",
                   "lambda"
                 ]
               ]
@@ -75,7 +75,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/user-management-api-dev*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/user-management-api-prod*:*"
                     }
                   ]
                 },
@@ -86,7 +86,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/user-management-api-dev*:*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/user-management-api-prod*:*:*"
                     }
                   ]
                 },
@@ -99,7 +99,7 @@
                     "dynamodb:UpdateItem",
                     "dynamodb:DeleteItem"
                   ],
-                  "Resource": "arn:aws:dynamodb:us-east-1:302263063072:table/Users-dev"
+                  "Resource": "arn:aws:dynamodb:us-east-1:*:table/Users-prod"
                 }
               ]
             }
@@ -111,7 +111,7 @@
             "-",
             [
               "user-management-api",
-              "dev",
+              "prod",
               {
                 "Ref": "AWS::Region"
               },
@@ -126,16 +126,16 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
-          "S3Key": "serverless/user-management-api/dev/1733871324156-2024-12-10T22:55:24.156Z/user-management-api.zip"
+          "S3Key": "serverless/user-management-api/prod/1733874186336-2024-12-10T23:43:06.336Z/user-management-api.zip"
         },
         "Handler": "controllers/users.createUser",
         "Runtime": "nodejs20.x",
-        "FunctionName": "user-management-api-dev-createUser",
+        "FunctionName": "user-management-api-prod-createUser",
         "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "USERS_TABLE": "Users-dev"
+            "USERS_TABLE": "Users-prod"
           }
         },
         "Role": {
@@ -154,16 +154,16 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
-          "S3Key": "serverless/user-management-api/dev/1733871324156-2024-12-10T22:55:24.156Z/user-management-api.zip"
+          "S3Key": "serverless/user-management-api/prod/1733874186336-2024-12-10T23:43:06.336Z/user-management-api.zip"
         },
         "Handler": "controllers/users.getUsers",
         "Runtime": "nodejs20.x",
-        "FunctionName": "user-management-api-dev-getUsers",
+        "FunctionName": "user-management-api-prod-getUsers",
         "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "USERS_TABLE": "Users-dev"
+            "USERS_TABLE": "Users-prod"
           }
         },
         "Role": {
@@ -182,16 +182,16 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
-          "S3Key": "serverless/user-management-api/dev/1733871324156-2024-12-10T22:55:24.156Z/user-management-api.zip"
+          "S3Key": "serverless/user-management-api/prod/1733874186336-2024-12-10T23:43:06.336Z/user-management-api.zip"
         },
         "Handler": "controllers/users.getUser",
         "Runtime": "nodejs20.x",
-        "FunctionName": "user-management-api-dev-getUser",
+        "FunctionName": "user-management-api-prod-getUser",
         "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "USERS_TABLE": "Users-dev"
+            "USERS_TABLE": "Users-prod"
           }
         },
         "Role": {
@@ -210,16 +210,16 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
-          "S3Key": "serverless/user-management-api/dev/1733871324156-2024-12-10T22:55:24.156Z/user-management-api.zip"
+          "S3Key": "serverless/user-management-api/prod/1733874186336-2024-12-10T23:43:06.336Z/user-management-api.zip"
         },
         "Handler": "controllers/users.updateUser",
         "Runtime": "nodejs20.x",
-        "FunctionName": "user-management-api-dev-updateUser",
+        "FunctionName": "user-management-api-prod-updateUser",
         "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "USERS_TABLE": "Users-dev"
+            "USERS_TABLE": "Users-prod"
           }
         },
         "Role": {
@@ -238,16 +238,16 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
-          "S3Key": "serverless/user-management-api/dev/1733871324156-2024-12-10T22:55:24.156Z/user-management-api.zip"
+          "S3Key": "serverless/user-management-api/prod/1733874186336-2024-12-10T23:43:06.336Z/user-management-api.zip"
         },
         "Handler": "controllers/users.deleteUser",
         "Runtime": "nodejs20.x",
-        "FunctionName": "user-management-api-dev-deleteUser",
+        "FunctionName": "user-management-api-prod-deleteUser",
         "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
           "Variables": {
-            "USERS_TABLE": "Users-dev"
+            "USERS_TABLE": "Users-prod"
           }
         },
         "Role": {
@@ -261,60 +261,60 @@
         "DeleteUserLogGroup"
       ]
     },
-    "CreateUserLambdaVersionLyJAdPka0cneMytiArKZIDFIvzoJuxQJ85RFHgroz0M": {
+    "CreateUserLambdaVersionqnmFJBpaerv8Q5qAE6D3kNaTyuv7EjW3dc3LqcIe0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateUserLambdaFunction"
         },
-        "CodeSha256": "EG1vJb/DubKaPpGKOKCwZizAurAmhlOXZRrFhHkQbl8="
+        "CodeSha256": "LviIlKFTygLSRxw4VB7h0fZCL1zlO1Lt9zUrwInathc="
       }
     },
-    "GetUsersLambdaVersionwCSQ753pSSXvxSTHIJPWwqfsVuUuPcdXICqlPjycsUQ": {
+    "GetUsersLambdaVersionmxo49MlzeMmZjOu9qrAFzK6qgZznTWiBaCWYtOe3MM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetUsersLambdaFunction"
         },
-        "CodeSha256": "EG1vJb/DubKaPpGKOKCwZizAurAmhlOXZRrFhHkQbl8="
+        "CodeSha256": "LviIlKFTygLSRxw4VB7h0fZCL1zlO1Lt9zUrwInathc="
       }
     },
-    "GetUserLambdaVersionvo4ludcmsSesBsuI37ssrggpBqTOtS5xyFh2lob0Y": {
+    "GetUserLambdaVersionJyXYc6hhtSwjvFigJ0WRsHyyqkajDrhKfZFsDTUZOs": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetUserLambdaFunction"
         },
-        "CodeSha256": "EG1vJb/DubKaPpGKOKCwZizAurAmhlOXZRrFhHkQbl8="
+        "CodeSha256": "LviIlKFTygLSRxw4VB7h0fZCL1zlO1Lt9zUrwInathc="
       }
     },
-    "UpdateUserLambdaVersiondsnPL2F734n3IzXxv4JF2UabFAZPPxgA67lojPqy0E": {
+    "UpdateUserLambdaVersion3bn0KBKlqYrDcnNXaNsP78i0H8A6cGDL7dYB6w7AoQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateUserLambdaFunction"
         },
-        "CodeSha256": "EG1vJb/DubKaPpGKOKCwZizAurAmhlOXZRrFhHkQbl8="
+        "CodeSha256": "LviIlKFTygLSRxw4VB7h0fZCL1zlO1Lt9zUrwInathc="
       }
     },
-    "DeleteUserLambdaVersiona80BAbcYdgMxbh1twELPqCEXK2CTtezRwzhOZMS6Ik": {
+    "DeleteUserLambdaVersionc48GO65yujTDFx9ApAj9q5bD2lkNWleukQjaxwFC0M": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteUserLambdaFunction"
         },
-        "CodeSha256": "EG1vJb/DubKaPpGKOKCwZizAurAmhlOXZRrFhHkQbl8="
+        "CodeSha256": "LviIlKFTygLSRxw4VB7h0fZCL1zlO1Lt9zUrwInathc="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "dev-user-management-api",
+        "Name": "prod-user-management-api",
         "EndpointConfiguration": {
           "Types": [
             "EDGE"
@@ -580,13 +580,13 @@
         "DeleteUserLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1733871299110": {
+    "ApiGatewayDeployment1733874162330": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         },
-        "StageName": "dev"
+        "StageName": "prod"
       },
       "DependsOn": [
         "ApiGatewayMethodUsersPost",
@@ -784,7 +784,7 @@
     "UsersTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
-        "TableName": "Users-dev",
+        "TableName": "Users-prod",
         "AttributeDefinitions": [
           {
             "AttributeName": "id",
@@ -805,52 +805,52 @@
     "ServerlessDeploymentBucketName": {
       "Value": "serverless-framework-deployments-us-east-1-8be6dddb-6a05",
       "Export": {
-        "Name": "sls-user-management-api-dev-ServerlessDeploymentBucketName"
+        "Name": "sls-user-management-api-prod-ServerlessDeploymentBucketName"
       }
     },
     "CreateUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateUserLambdaVersionLyJAdPka0cneMytiArKZIDFIvzoJuxQJ85RFHgroz0M"
+        "Ref": "CreateUserLambdaVersionqnmFJBpaerv8Q5qAE6D3kNaTyuv7EjW3dc3LqcIe0"
       },
       "Export": {
-        "Name": "sls-user-management-api-dev-CreateUserLambdaFunctionQualifiedArn"
+        "Name": "sls-user-management-api-prod-CreateUserLambdaFunctionQualifiedArn"
       }
     },
     "GetUsersLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetUsersLambdaVersionwCSQ753pSSXvxSTHIJPWwqfsVuUuPcdXICqlPjycsUQ"
+        "Ref": "GetUsersLambdaVersionmxo49MlzeMmZjOu9qrAFzK6qgZznTWiBaCWYtOe3MM"
       },
       "Export": {
-        "Name": "sls-user-management-api-dev-GetUsersLambdaFunctionQualifiedArn"
+        "Name": "sls-user-management-api-prod-GetUsersLambdaFunctionQualifiedArn"
       }
     },
     "GetUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetUserLambdaVersionvo4ludcmsSesBsuI37ssrggpBqTOtS5xyFh2lob0Y"
+        "Ref": "GetUserLambdaVersionJyXYc6hhtSwjvFigJ0WRsHyyqkajDrhKfZFsDTUZOs"
       },
       "Export": {
-        "Name": "sls-user-management-api-dev-GetUserLambdaFunctionQualifiedArn"
+        "Name": "sls-user-management-api-prod-GetUserLambdaFunctionQualifiedArn"
       }
     },
     "UpdateUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateUserLambdaVersiondsnPL2F734n3IzXxv4JF2UabFAZPPxgA67lojPqy0E"
+        "Ref": "UpdateUserLambdaVersion3bn0KBKlqYrDcnNXaNsP78i0H8A6cGDL7dYB6w7AoQ"
       },
       "Export": {
-        "Name": "sls-user-management-api-dev-UpdateUserLambdaFunctionQualifiedArn"
+        "Name": "sls-user-management-api-prod-UpdateUserLambdaFunctionQualifiedArn"
       }
     },
     "DeleteUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteUserLambdaVersiona80BAbcYdgMxbh1twELPqCEXK2CTtezRwzhOZMS6Ik"
+        "Ref": "DeleteUserLambdaVersionc48GO65yujTDFx9ApAj9q5bD2lkNWleukQjaxwFC0M"
       },
       "Export": {
-        "Name": "sls-user-management-api-dev-DeleteUserLambdaFunctionQualifiedArn"
+        "Name": "sls-user-management-api-prod-DeleteUserLambdaFunctionQualifiedArn"
       }
     },
     "ServiceEndpoint": {
@@ -871,12 +871,12 @@
             {
               "Ref": "AWS::URLSuffix"
             },
-            "/dev"
+            "/prod"
           ]
         ]
       },
       "Export": {
-        "Name": "sls-user-management-api-dev-ServiceEndpoint"
+        "Name": "sls-user-management-api-prod-ServiceEndpoint"
       }
     }
   }
