@@ -21,7 +21,6 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          
 
       - name: Run tests
         run: |
@@ -37,26 +36,7 @@ jobs:
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: "Tests Passed Successfully "
           body: "All tests have passed successfully for the latest push to the master branch."
-          to: tutorbinga@gmail.com
+          to: devbingacodes@gmail.com
           from: allanbinga73@gmail.com
 
-      - name: Install Serverless Framework
-        run: npm install -g serverless
-
-      - name: Deploy to AWS (Dev)
-        if: github.ref == 'refs/heads/master'
-        run: |
-          npx serverless deploy --stage dev
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
-
-      - name: Deploy to AWS (Prod)
-        if: github.ref == 'refs/heads/master' 
-        run: |
-          npx serverless deploy --stage prod
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+    
