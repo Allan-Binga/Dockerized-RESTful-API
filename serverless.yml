@@ -27,7 +27,6 @@ functions:
       - http:
           path: users
           method: get
-    logs: true
 
   createUser:
     handler: controllers/users.createUser
@@ -35,7 +34,6 @@ functions:
       - http:
           path: users
           method: post
-    logs: true
 
   getUser:
     handler: controllers/users.getUser
@@ -43,7 +41,6 @@ functions:
       - http:
           path: users/{id}
           method: get
-    logs: true      
 
   deleteUser:
     handler: controllers/users.deleteUser
@@ -51,7 +48,6 @@ functions:
       - http:
           path: users/{id}
           method: delete
-    logs: true      
 
   updateUser:
     handler: controllers/users.updateUser
@@ -59,21 +55,17 @@ functions:
       - http:
           path: users/{id}
           method: put
-    logs: true
 
 resources:
   Resources:
     UsersTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Users-${opt:stage, 'dev'}  
+        TableName: Users-${opt:stage, 'dev'}
         AttributeDefinitions:
-          - AttributeName: userId
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: userId
+          - AttributeName: id
             KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5
-
+        BillingMode: PAY_PER_REQUEST
