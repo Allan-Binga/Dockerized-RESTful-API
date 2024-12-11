@@ -39,7 +39,7 @@ jobs:
           to: devbingacodes@gmail.com
           from: allanbinga73@gmail.com
 
-      - name: Deploy to AWS (Dev)
+      - name: Deploy to AWS - (Dev)
         if: github.ref == 'refs/heads/master'
         run: |
             npx serverless deploy --stage dev
@@ -48,7 +48,7 @@ jobs:
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             SERVERLESS_ACCESS_KEY: ${{secrets.SERVERLESS_ACCESS_KEY}}
             
-      - name: Deploy to AWS (Prod)
+      - name: Deploy to AWS - (Prod)
         if: github.ref == 'refs/heads/master'
         run: |
           npx serverless deploy --stage prod
