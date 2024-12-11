@@ -39,6 +39,11 @@ jobs:
           to: devbingacodes@gmail.com
           from: allanbinga73@gmail.com
 
+      - name: Install Serverless Framework
+        run: npm install -g serverless
+        
+
+
       # - name: Deploy to AWS - (Dev)
       #   if: github.ref == 'refs/heads/master'
       #   run: |
