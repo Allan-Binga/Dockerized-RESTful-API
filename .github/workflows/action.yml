@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  test_and_email_deploy:
+  test_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -70,5 +70,48 @@ jobs:
            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
            SERVERLESS_ACCESS_KEY: ${{secrets.SERVERLESS_ACCESS_KEY}}  
+  
+  docker_push:
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t allanbinga/restfulapi:v1.0.0 .
+
+      - name: Log in to DockerHub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Tag Docker image
+        run: |
+           docker tag restfulapi:v1.0.0 allanbinga/restfulapi:v1.0.0
+
+      - name: Push Docker image to DockerHub
+        run: |
+          docker push allanbinga/restfulapi:v1.0.0
+    
+  send_email:
+      needs:
+      - test_and_deploy
+      - docker_push
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "Deployment Completed Successfully"
+          body: |
+            The deployment to AWS and DockerHub was successful for the latest push to the master branch.
+            All jobs completed without errors.
+          to: devbingacodes@gmail.com
+          from: allanbinga73@gmail.com      
     

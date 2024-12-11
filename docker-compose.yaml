@@ -2,11 +2,11 @@ version: "3.8"
 
 services:
   restjsapi:
-    image: restapi/restjsapi:v1.0.0
+    image: restfulapi:v1.0.0
     build: .
     container_name: restjsapi
     stdin_open: true
     tty: true
     restart: always
     ports:
-      - "8000:8000"
+      - "8100:8100"
