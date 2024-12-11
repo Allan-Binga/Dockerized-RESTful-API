@@ -7,7 +7,7 @@ on:
 
 jobs:
   test_and_deploy:
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -72,7 +72,7 @@ jobs:
            SERVERLESS_ACCESS_KEY: ${{secrets.SERVERLESS_ACCESS_KEY}}  
   
   docker_push:
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -98,7 +98,7 @@ jobs:
       needs:
       - test_and_deploy
       - docker_push
-      runs-on: ubuntu-latest
+      runs-on: Ubuntu-24.04
 
       steps:
       - name: Send email notification
