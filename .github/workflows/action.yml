@@ -26,19 +26,6 @@ jobs:
         run: |
           npm test
 
-      - name: Send email notification
-        if: success()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.SMTP_USERNAME }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: "Tests Passed Successfully "
-          body: "All tests have passed successfully for the latest push to the master branch."
-          to: devbingacodes@gmail.com
-          from: allanbinga73@gmail.com
-
       - name: Install Serverless Framework
         run: npm install -g serverless
         
