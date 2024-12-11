@@ -5,7 +5,7 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stage: ${opt:stage, 'dev'} # Default to 'dev' stage if not specified
+  stage: ${opt:stage, 'dev'} # stage if not specified
   environment:
     USERS_TABLE: Users-${self:provider.stage} # DynamoDB table name
   iam:
