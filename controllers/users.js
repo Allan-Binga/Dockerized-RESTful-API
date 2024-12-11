@@ -1,61 +1,96 @@
 import { v4 as uuidv4 } from "uuid";
 import { addUser, getUsers as fetchUsers, getUser as fetchUser, deleteUser as removeUser, updateUser as modifyUser } from "../dynamoDB.js";
 
-export const getUsers = async (req, res) => {
+export const getUsers = async (event) => {
   try {
     const users = await fetchUsers();
-    res.status(200).json(users);
+    return {
+      statusCode: 200,
+      body: JSON.stringify(users),
+    };
   } catch (error) {
-    res.status(500).json({ error: "Could not fetch users" });
+    console.error("Error fetching users:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Could not fetch users" }),
+    };
   }
 };
 
-export const createUser = async (req, res) => {
-  const user = { id: uuidv4(), ...req.body };
-
+export const createUser = async (event) => {
   try {
+    const user = { id: uuidv4(), ...JSON.parse(event.body) };
     await addUser(user);
-    res.status(201).json({ message: `User ${user.firstName} added to database.` });
+    return {
+      statusCode: 201,
+      body: JSON.stringify({ message: `User ${user.firstName} added to database.` }),
+    };
   } catch (error) {
-    res.status(500).json({ error: "Could not create user" });
+    console.error("Error creating user:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Could not create user" }),
+    };
   }
 };
 
-export const getUser = async (req, res) => {
-  const { id } = req.params;
-
+export const getUser = async (event) => {
   try {
+    const { id } = event.pathParameters;
     const user = await fetchUser(id);
+
     if (user) {
-      res.status(200).json(user);
+      return {
+        statusCode: 200,
+        body: JSON.stringify(user),
+      };
     } else {
-      res.status(404).json({ error: "User not found" });
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ error: "User not found" }),
+      };
     }
   } catch (error) {
-    res.status(500).json({ error: "Could not fetch user" });
+    console.error("Error fetching user:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Could not fetch user" }),
+    };
   }
 };
 
-export const deleteUser = async (req, res) => {
-  const { id } = req.params;
-
+export const deleteUser = async (event) => {
   try {
+    const { id } = event.pathParameters;
     await removeUser(id);
-    res.status(200).json({ message: `User with id ${id} deleted.` });
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: `User with id ${id} deleted.` }),
+    };
   } catch (error) {
-    res.status(500).json({ error: "Could not delete user" });
+    console.error("Error deleting user:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Could not delete user" }),
+    };
   }
 };
 
-export const updateUser = async (req, res) => {
-  const { id } = req.params;
-  const updates = req.body;
-
+export const updateUser = async (event) => {
   try {
+    const { id } = event.pathParameters;
+    const updates = JSON.parse(event.body);
     await modifyUser(id, updates);
-    res.status(200).json({ message: `User with id ${id} updated.` });
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: `User with id ${id} updated.` }),
+    };
   } catch (error) {
-    res.status(500).json({ error: "Could not update user" });
+    console.error("Error updating user:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Could not update user" }),
+    };
   }
 };
 
