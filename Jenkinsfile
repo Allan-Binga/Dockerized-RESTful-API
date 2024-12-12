@@ -2,6 +2,7 @@ pipeline {
     agent any
     tools {
         nodejs "nodejs 23" //VERSION
+        docker "docker"
     }
     environment {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
