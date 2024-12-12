@@ -25,6 +25,7 @@ pipeline {
         //         }
         //     }
         // }
+        //DOCKER
         stage('Install dependencies') {
             steps {
                 sh 'npm install'
