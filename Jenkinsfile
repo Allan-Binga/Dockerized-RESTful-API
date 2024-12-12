@@ -16,15 +16,15 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/Allan-Binga/Dockerized-RESTful-API']]])
             }
         }
-        stage('Setup Node.js') {
-            steps {
-                withEnv(['NODE_VERSION=20.x']) {
-                    sh 'nvm install $NODE_VERSION'
-                    sh 'nvm use $NODE_VERSION'
-                    sh 'npm install'
-                }
-            }
-        }
+        // stage('Setup Node.js') {
+        //     steps {
+        //         withEnv(['NODE_VERSION=20.x']) {
+        //             sh 'nvm install $NODE_VERSION'
+        //             sh 'nvm use $NODE_VERSION'
+        //             sh 'npm install'
+        //         }
+        //     }
+        // }
         stage('Install dependencies') {
             steps {
                 sh 'npm install'
