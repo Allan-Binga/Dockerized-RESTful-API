@@ -4,11 +4,11 @@ pipeline {
         nodejs "nodejs 23" //VERSION
     }
     environment {
-        AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
-        SERVERLESS_ACCESS_KEY = credentials('serverless-access-key')
-        DOCKER_USERNAME = credentials('docker-username')
-        DOCKER_PASSWORD = credentials('docker-password')
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        SERVERLESS_ACCESS_KEY = credentials('SERVERLESS_ACCESS_KEY')
+        DOCKER_USERNAME = credentials('DOCKER_USERNAME')
+        DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
     }
     stages {
         stage('Checkout code') {
