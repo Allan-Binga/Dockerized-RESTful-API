@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        nodejs "nodejs 23" 
+        nodejs "nodejs 23" //VERSION
     }
     environment {
         AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
