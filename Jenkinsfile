@@ -60,4 +60,12 @@ pipeline {
         //     }
         // }
     }
+     post {
+        success {
+            slackSend(channel: '#testing-and-building', color: 'good', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' succeeded!")
+        }
+        failure {
+            slackSend(channel: '#testing-and-building', color: 'danger', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' failed.")
+        }
+    }
 }
