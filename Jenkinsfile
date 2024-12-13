@@ -5,13 +5,13 @@ pipeline {
         nodejs 'nodejs 23' //VERSION
      //   dockerTool 'docker' //thats that
     }
-    environment {
+ //   environment {
       //  AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
       //  AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY') //CHANGED TO ACCOMODATE
        // SERVERLESS_ACCESS_KEY = credentials('SERVERLESS_ACCESS_KEY')
       //  DOCKER_USERNAME = credentials('DOCKER_USERNAME')
      //   DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
-    }
+ //   }
     stages {
         // stage('Checkout code') {
         //     steps {
