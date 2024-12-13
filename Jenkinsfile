@@ -1,8 +1,9 @@
+/* groovylint-disable-next-line CompileStatic */
 pipeline {
     agent any
     tools {
-        nodejs "nodejs 23" //VERSION
-        dockerTool "docker-latest"
+        nodejs 'nodejs 23' //VERSION
+        dockerTool 'docker-latest'
     }
     environment {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
@@ -17,16 +18,7 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/Allan-Binga/Dockerized-RESTful-API']]])
             }
         }
-        // stage('Setup Node.js') {
-        //     steps {
-        //         withEnv(['NODE_VERSION=20.x']) {
-        //             sh 'nvm install $NODE_VERSION'
-        //             sh 'nvm use $NODE_VERSION'
-        //             sh 'npm install'
-        //         }
-        //     }
-        // }
-        //DOCKER
+
         stage('Install dependencies') {
             steps {
                 sh 'npm install'
@@ -43,15 +35,13 @@ pipeline {
             }
         }
         stage('Deploy to AWS') {
-            when {
-                branch 'master'
-            }
             steps {
                 sh '''
-                npx serverless deploy --force
-                '''
+                 npx serverless deploy --force
+                   '''
             }
         }
+
         stage('Build Docker image') {
             steps {
                 sh 'docker build -t allanbinga/restfulapi:v1.0.0 .'
@@ -70,21 +60,4 @@ pipeline {
             }
         }
     }
-    // post {
-    //     success {
-    //         script {
-    //             def emailBody = """
-    //             The deployment to AWS and DockerHub was successful for the latest push to the master branch. All jobs completed without errors.
-    //             """
-    //             emailext (
-    //                 subject: "Successful job completion.",
-    //                 body: emailBody,
-    //                 to: "devbingacodes@gmail.com",
-    //                 from: "allanbinga73@gmail.com",
-    //                 mimeType: 'text/html',
-    //                 replyTo: "allanbinga73@gmail.com"
-    //             )
-    //         }
-    //     }
-    // }
 }
