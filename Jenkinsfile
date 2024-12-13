@@ -29,18 +29,18 @@ pipeline {
                 sh 'npm test'
             }
         }
-        stage('Install Serverless Framework') {
-            steps {
-                sh 'npm install -g serverless'
-            }
-        }
-        stage('Deploy to AWS') {
-            steps {
-                sh '''
-                 npx serverless deploy --force
-                   '''
-            }
-        }
+        // stage('Install Serverless Framework') {
+        //     steps {
+        //         sh 'npm install -g serverless'
+        //     }
+        // }
+        // stage('Deploy to AWS') {
+        //     steps {
+        //         sh '''
+        //          npx serverless deploy --force
+        //            '''
+        //     }
+        // }
 
         stage('Build Docker image') {
             steps {
