@@ -58,8 +58,7 @@ pipeline {
         //     steps {
         //         sh 'docker push allanbinga/restfulapi:v1.0.0'
         //     }
-        // }
-        //testing hooks2
+        // } test 3
     }
      post {
         success {
