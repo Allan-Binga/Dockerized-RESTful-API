@@ -16,14 +16,15 @@ pipeline {
                 sh 'npm test'
             }
         }
+    }
 
-        post {
-            success {
-                slackSend(channel: '#building-and-testing', color: 'good', message: 'Job succeeded!')
-            }
-            failure {
-                slackSend(channel: '#building-and-testing', color: 'danger', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' failed.")
-            }
+    post {
+        success {
+            slackSend(channel: '#building-and-testing', color: 'good', message: 'Job succeeded!')
+        }
+        failure {
+            /* groovylint-disable-next-line DuplicateStringLiteral, LineLength */
+            slackSend(channel: '#building-and-testing', color: 'danger', message: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' failed.")
         }
     }
 }
